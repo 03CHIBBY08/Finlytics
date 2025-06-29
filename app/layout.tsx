@@ -2,17 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import dynamic from "next/dynamic"
-
-// ⬇️ Sidebar code is browser-only.  We map the named export to `default`
-// so `dynamic()` receives a real React component.
-const SidebarShell = dynamic(
-  () =>
-    import("@/components/sidebar-shell").then((m) => ({
-      default: m.SidebarShell,
-    })),
-  { ssr: false },
-)
+import { SidebarShell } from "@/components/sidebar-shell"
 
 const inter = Inter({ subsets: ["latin"] })
 
