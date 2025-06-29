@@ -1,120 +1,115 @@
-import { Trophy, Award, Star } from "lucide-react"
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-
-const badges = [
-  {
-    name: "10K Club",
-    description: "Revenue milestone",
-    icon: Trophy,
-    color: "text-yellow-600",
-    bgColor: "bg-yellow-100 dark:bg-yellow-900/30",
-    unlocked: true,
-  },
-  {
-    name: "Churn Buster",
-    description: "Churn < 5%",
-    icon: Award,
-    color: "text-green-600",
-    bgColor: "bg-green-100 dark:bg-green-900/30",
-    unlocked: true,
-  },
-  {
-    name: "Growth Guru",
-    description: "MRR +20%",
-    icon: Star,
-    color: "text-purple-600",
-    bgColor: "bg-purple-100 dark:bg-purple-900/30",
-    unlocked: false,
-  },
-]
+import { Heart, Shield, TrendingUp, AlertCircle } from "lucide-react"
 
 export function FinanceHealthWidget() {
-  const healthScore = 78
+  const healthScore = 87
+  const metrics = [
+    { label: "Cash Flow", value: 92, status: "excellent" },
+    { label: "Debt Ratio", value: 78, status: "good" },
+    { label: "Profitability", value: 85, status: "good" },
+    { label: "Liquidity", value: 94, status: "excellent" },
+  ]
 
-  const getScoreColor = (score: number) => {
-    if (score >= 75) return "text-green-600"
-    if (score >= 50) return "text-orange-600"
-    return "text-red-600"
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "excellent":
+        return "text-green-400"
+      case "good":
+        return "text-yellow-400"
+      case "warning":
+        return "text-orange-400"
+      default:
+        return "text-red-400"
+    }
   }
 
-  const getScoreBgColor = (score: number) => {
-    if (score >= 75) return "from-green-500 to-emerald-500"
-    if (score >= 50) return "from-orange-500 to-yellow-500"
-    return "from-red-500 to-pink-500"
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "excellent":
+        return "border-green-500 text-green-400"
+      case "good":
+        return "border-yellow-500 text-yellow-400"
+      case "warning":
+        return "border-orange-500 text-orange-400"
+      default:
+        return "border-red-500 text-red-400"
+    }
   }
 
   return (
-    <div className="space-y-6">
-      {/* Health Score */}
-      <Card className="shadow-lg border-0">
-        <CardHeader className="text-center">
-          <CardTitle className="text-lg font-semibold">Financial Health Score</CardTitle>
-        </CardHeader>
-        <CardContent className="text-center space-y-6">
-          {/* Circular Progress */}
-          <div className="relative w-32 h-32 mx-auto">
-            <div className={`absolute inset-0 bg-gradient-to-r ${getScoreBgColor(healthScore)} rounded-full p-1`}>
-              <div className="w-full h-full bg-white dark:bg-slate-900 rounded-full flex items-center justify-center">
-                <div className="text-center">
-                  <div className={`text-2xl font-bold ${getScoreColor(healthScore)}`}>{healthScore}</div>
-                  <div className="text-xs text-slate-500">/ 100</div>
-                </div>
-              </div>
+    <Card className="neural-card">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-yellow-400 font-mono">
+          <Heart className="w-5 h-5" />
+          FINANCIAL HEALTH
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Overall Health Score */}
+        <div className="text-center">
+          <div className="relative w-24 h-24 mx-auto mb-4">
+            <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" stroke="rgba(255,255,0,0.2)" strokeWidth="8" fill="none" />
+              <circle
+                cx="50"
+                cy="50"
+                r="40"
+                stroke="#FBBF24"
+                strokeWidth="8"
+                fill="none"
+                strokeDasharray={`${2 * Math.PI * 40}`}
+                strokeDashoffset={`${2 * Math.PI * 40 * (1 - healthScore / 100)}`}
+                className="transition-all duration-1000"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-2xl font-bold text-yellow-400 font-mono">{healthScore}</span>
             </div>
           </div>
+          <Badge variant="outline" className="border-green-500 text-green-400 mb-2">
+            EXCELLENT
+          </Badge>
+          <p className="text-xs text-yellow-600">Overall Financial Health</p>
+        </div>
 
-          <div className="space-y-2">
-            <Progress value={healthScore} className="h-2" />
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              {healthScore >= 75 ? "Excellent" : healthScore >= 50 ? "Good" : "Needs Attention"}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Achievement Badges */}
-      <Card className="shadow-lg border-0">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-600" />
-            Achievements
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {badges.map((badge, index) => (
-            <div
-              key={index}
-              className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
-                badge.unlocked
-                  ? "bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800"
-                  : "bg-slate-100 dark:bg-slate-800 opacity-60"
-              }`}
-            >
-              <div className={`p-2 rounded-lg ${badge.unlocked ? badge.bgColor : "bg-slate-200 dark:bg-slate-700"}`}>
-                <badge.icon className={`w-4 h-4 ${badge.unlocked ? badge.color : "text-slate-400"}`} />
+        {/* Detailed Metrics */}
+        <div className="space-y-4">
+          {metrics.map((metric, index) => (
+            <div key={index} className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-yellow-300 font-mono">{metric.label}</span>
+                <Badge variant="outline" className={`text-xs ${getStatusBadge(metric.status)}`}>
+                  {metric.value}%
+                </Badge>
               </div>
-
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`font-medium ${badge.unlocked ? "text-slate-800 dark:text-slate-100" : "text-slate-500"}`}
-                  >
-                    {badge.name}
-                  </span>
-                  {badge.unlocked && (
-                    <Badge className="bg-green-100 text-green-700 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-400">
-                      Unlocked
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{badge.description}</p>
-              </div>
+              <Progress value={metric.value} className="h-2 bg-black/50" />
             </div>
           ))}
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="pt-4 border-t border-yellow-500/20">
+          <h4 className="text-sm font-semibold text-yellow-400 mb-3 font-mono">RECOMMENDATIONS</h4>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs text-yellow-600">
+              <TrendingUp className="w-3 h-3 text-green-400" />
+              <span>Increase emergency fund by 15%</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-yellow-600">
+              <Shield className="w-3 h-3 text-yellow-400" />
+              <span>Diversify investment portfolio</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-yellow-600">
+              <AlertCircle className="w-3 h-3 text-orange-400" />
+              <span>Review quarterly expenses</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 }

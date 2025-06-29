@@ -1,95 +1,105 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
+import { Badge } from "@/components/ui/badge"
+import { Users, UserPlus, UserMinus, TrendingUp } from "lucide-react"
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
-const sourceData = [
-  { name: "Ads", value: 35, color: "#3b82f6" },
-  { name: "Referrals", value: 28, color: "#10b981" },
-  { name: "Organic", value: 22, color: "#8b5cf6" },
-  { name: "Influencers", value: 15, color: "#f59e0b" },
-]
-
-const metrics = [
-  { label: "CAC", value: "₹250", description: "Customer Acquisition Cost" },
-  { label: "LTV", value: "₹2,450", description: "Lifetime Value" },
-  { label: "ARPU", value: "₹1,050", description: "Average Revenue Per User" },
+const customerData = [
+  { month: "Jan", new: 120, churned: 15, net: 105 },
+  { month: "Feb", new: 145, churned: 22, net: 123 },
+  { month: "Mar", new: 168, churned: 18, net: 150 },
+  { month: "Apr", new: 192, churned: 25, net: 167 },
+  { month: "May", new: 215, churned: 20, net: 195 },
+  { month: "Jun", new: 238, churned: 28, net: 210 },
 ]
 
 export function CustomerTrendBreakdown() {
-  return (
-    <Card className="shadow-lg border-0">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">Customer Acquisition Breakdown</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Pie Chart */}
-          <div className="space-y-4">
-            <h3 className="font-medium text-slate-700 dark:text-slate-300">Traffic Sources</h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={sourceData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {sourceData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      border: "none",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+  const totalCustomers = 45231
+  const newCustomers = 238
+  const churnedCustomers = 28
+  const netGrowth = newCustomers - churnedCustomers
+  const growthRate = ((netGrowth / totalCustomers) * 100).toFixed(2)
 
-            {/* Legend */}
-            <div className="grid grid-cols-2 gap-2">
-              {sourceData.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
-                    {item.name} ({item.value}%)
-                  </span>
-                </div>
-              ))}
-            </div>
+  return (
+    <Card className="neural-card">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-yellow-400 font-mono">
+          <Users className="w-5 h-5" />
+          CUSTOMER ACQUISITION MATRIX
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Key Metrics */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="text-center p-3 rounded-lg bg-black/40 border border-yellow-500/20">
+            <UserPlus className="w-6 h-6 text-green-400 mx-auto mb-2" />
+            <div className="text-lg font-bold text-green-400 font-mono">{newCustomers}</div>
+            <div className="text-xs text-yellow-600">New Customers</div>
           </div>
 
-          {/* Key Metrics */}
-          <div className="space-y-4">
-            <h3 className="font-medium text-slate-700 dark:text-slate-300">Key Metrics</h3>
-            <div className="space-y-4">
-              {metrics.map((metric, index) => (
-                <div key={index} className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{metric.label}</span>
-                    <span className="text-lg font-bold text-slate-800 dark:text-slate-100">{metric.value}</span>
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">{metric.description}</p>
-                </div>
-              ))}
-            </div>
+          <div className="text-center p-3 rounded-lg bg-black/40 border border-yellow-500/20">
+            <UserMinus className="w-6 h-6 text-red-400 mx-auto mb-2" />
+            <div className="text-lg font-bold text-red-400 font-mono">{churnedCustomers}</div>
+            <div className="text-xs text-yellow-600">Churned</div>
+          </div>
 
-            {/* Additional Insights */}
-            <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg">
-              <h4 className="font-medium text-slate-800 dark:text-slate-100 mb-2">💡 Insight</h4>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Referral customers have 40% higher LTV. Consider implementing a referral rewards program.
-              </p>
-            </div>
+          <div className="text-center p-3 rounded-lg bg-black/40 border border-yellow-500/20">
+            <TrendingUp className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
+            <div className="text-lg font-bold text-yellow-400 font-mono">+{netGrowth}</div>
+            <div className="text-xs text-yellow-600">Net Growth</div>
+          </div>
+
+          <div className="text-center p-3 rounded-lg bg-black/40 border border-yellow-500/20">
+            <Users className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+            <div className="text-lg font-bold text-blue-400 font-mono">{growthRate}%</div>
+            <div className="text-xs text-yellow-600">Growth Rate</div>
+          </div>
+        </div>
+
+        {/* Trend Chart */}
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={customerData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,0,0.1)" />
+              <XAxis dataKey="month" stroke="#FCD34D" />
+              <YAxis stroke="#FCD34D" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(0,0,0,0.9)",
+                  border: "1px solid rgba(255,255,0,0.3)",
+                  borderRadius: "8px",
+                }}
+              />
+              <Area type="monotone" dataKey="new" stackId="1" stroke="#10B981" fill="rgba(16, 185, 129, 0.3)" />
+              <Area type="monotone" dataKey="churned" stackId="2" stroke="#EF4444" fill="rgba(239, 68, 68, 0.3)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Customer Segments */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-yellow-400 font-mono">ACQUISITION CHANNELS</h4>
+          <div className="space-y-2">
+            {[
+              { channel: "Organic Search", percentage: 35, customers: 83 },
+              { channel: "Paid Ads", percentage: 28, customers: 67 },
+              { channel: "Referrals", percentage: 22, customers: 52 },
+              { channel: "Social Media", percentage: 15, customers: 36 },
+            ].map((item, index) => (
+              <div key={index} className="flex items-center justify-between p-2 rounded bg-black/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                  <span className="text-sm text-yellow-300">{item.channel}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="border-yellow-500 text-yellow-400 text-xs">
+                    {item.customers}
+                  </Badge>
+                  <span className="text-xs text-yellow-600 w-8">{item.percentage}%</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </CardContent>
