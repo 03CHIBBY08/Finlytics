@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
+// Navigation data organized by sections
 const navigationData = {
   main: [
     {
@@ -167,6 +168,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Main Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-yellow-400 font-mono">MAIN</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -187,6 +189,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         <SidebarSeparator />
 
+        {/* Quick Access */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-yellow-400 font-mono">QUICK ACCESS</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -207,6 +210,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         <SidebarSeparator />
 
+        {/* Support */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-yellow-400 font-mono">SUPPORT</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -227,6 +231,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         <SidebarSeparator />
 
+        {/* Account & Settings */}
         <Collapsible defaultOpen className="group/collapsible">
           <SidebarGroup>
             <SidebarGroupLabel asChild>
@@ -256,6 +261,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         <SidebarSeparator />
 
+        {/* Legal & Compliance */}
         <Collapsible className="group/collapsible">
           <SidebarGroup>
             <SidebarGroupLabel asChild>

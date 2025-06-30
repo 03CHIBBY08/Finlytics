@@ -1,125 +1,174 @@
+"use client"
+
+import { Linkedin, Github, Twitter, Mail } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
-import { Github, Twitter, Linkedin, Mail } from "lucide-react"
 
 export function Footer() {
+  const { toast } = useToast()
+
+  const handleSocialClick = (platform: string, url: string) => {
+    toast({
+      title: "Social Link",
+      description: `Opening ${platform} in new tab...`,
+    })
+    window.open(url, "_blank", "noopener,noreferrer")
+  }
+
+  const handleContactClick = () => {
+    toast({
+      title: "Contact Info",
+      description: "Opening email client...",
+    })
+    window.location.href = "mailto:contact@finlytics.com"
+  }
+
   return (
-    <footer className="border-t border-yellow-500/30 bg-black/80 backdrop-blur-xl mt-16">
+    <footer className="bg-black/80 border-t border-yellow-500/30 mt-16 backdrop-blur-xl">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
+          {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-yellow-400 font-mono">FINLYTICS</h3>
-            <p className="text-sm text-yellow-600">
-              Neural Business Intelligence platform powered by quantum analytics for next-generation financial insights.
+            <p className="text-sm text-yellow-600 font-mono">
+              Neural business intelligence platform for the future of finance.
             </p>
-            <div className="flex space-x-4">
-              <Link href="#" className="text-yellow-500 hover:text-yellow-400 transition-colors">
-                <Github className="w-5 h-5" />
+            <div className="flex space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="cyber-button p-2"
+                onClick={() => handleSocialClick("LinkedIn", "https://linkedin.com/company/finlytics")}
+              >
+                <Linkedin className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="cyber-button p-2"
+                onClick={() => handleSocialClick("GitHub", "https://github.com/finlytics")}
+              >
+                <Github className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="cyber-button p-2"
+                onClick={() => handleSocialClick("Twitter", "https://twitter.com/finlytics")}
+              >
+                <Twitter className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="cyber-button p-2" onClick={handleContactClick}>
+                <Mail className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-yellow-400 font-mono">QUICK ACCESS</h4>
+            <div className="space-y-2">
+              <Link
+                href="/analytics"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Analytics
               </Link>
-              <Link href="#" className="text-yellow-500 hover:text-yellow-400 transition-colors">
-                <Twitter className="w-5 h-5" />
+              <Link
+                href="/reports"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Reports
               </Link>
-              <Link href="#" className="text-yellow-500 hover:text-yellow-400 transition-colors">
-                <Linkedin className="w-5 h-5" />
+              <Link
+                href="/customers"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Customers
               </Link>
-              <Link href="#" className="text-yellow-500 hover:text-yellow-400 transition-colors">
-                <Mail className="w-5 h-5" />
+              <Link
+                href="/revenue"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Revenue
               </Link>
             </div>
           </div>
 
-          {/* Product */}
+          {/* Support */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-yellow-400 font-mono">PRODUCT</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/analytics" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Analytics
-                </Link>
-              </li>
-              <li>
-                <Link href="/reports" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Reports
-                </Link>
-              </li>
-              <li>
-                <Link href="/customers" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Customers
-                </Link>
-              </li>
-              <li>
-                <Link href="/revenue" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Revenue
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-yellow-400 font-mono">COMPANY</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/team" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Team
-                </Link>
-              </li>
-              <li>
-                <Link href="/help" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="/docs" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link href="/api" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  API
-                </Link>
-              </li>
-            </ul>
+            <h4 className="font-semibold text-yellow-400 font-mono">SUPPORT</h4>
+            <div className="space-y-2">
+              <Link
+                href="/help"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Help Center
+              </Link>
+              <Link
+                href="/docs"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Documentation
+              </Link>
+              <Link
+                href="/api"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                API Reference
+              </Link>
+              <Link
+                href="/status"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                System Status
+              </Link>
+            </div>
           </div>
 
           {/* Legal */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-yellow-400 font-mono">LEGAL</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/privacy" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/security" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Security
-                </Link>
-              </li>
-              <li>
-                <Link href="/compliance" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-                  Compliance
-                </Link>
-              </li>
-            </ul>
+            <h4 className="font-semibold text-yellow-400 font-mono">LEGAL</h4>
+            <div className="space-y-2">
+              <Link
+                href="/privacy"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                href="/security"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Security
+              </Link>
+              <Link
+                href="/compliance"
+                className="block text-sm text-yellow-600 hover:text-yellow-400 font-mono transition-colors"
+              >
+                Compliance
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-yellow-500/30 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-yellow-500/30 mt-8 pt-8 flex flex-col md:flex-row items-center justify-between">
           <p className="text-sm text-yellow-600 font-mono">
-            © 2024 Finlytics. All rights reserved. Neural Intelligence Platform.
+            © 2025 Finlytics. All rights reserved. Neural Intelligence v2.1
           </p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
-            <Link href="/status" className="text-sm text-yellow-600 hover:text-yellow-400 transition-colors">
-              System Status
-            </Link>
-            <div className="w-2 h-2 rounded-full bg-green-400 pulse-yellow"></div>
-            <span className="text-xs text-green-400 font-mono">ALL SYSTEMS OPERATIONAL</span>
+            <span className="text-xs text-yellow-600 font-mono">System Status:</span>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-xs text-green-400 font-mono">OPERATIONAL</span>
+            </div>
           </div>
         </div>
       </div>
