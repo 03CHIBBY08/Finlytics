@@ -1,168 +1,178 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Bell, Moon, Sun, ChevronDown, Globe, Zap, Activity, Wifi, Battery } from "lucide-react"
+import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
+import {
+  Bell,
+  Settings,
+  User,
+  LogOut,
+  Menu,
+  X,
+  Activity,
+  BarChart3,
+  Users,
+  DollarSign,
+  FileText,
+  Zap,
+} from "lucide-react"
 
 export function TopNavigation() {
-  const [isDarkMode, setIsDarkMode] = useState(true)
-  const [language, setLanguage] = useState("EN")
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [systemStatus, setSystemStatus] = useState("ONLINE")
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode)
-    document.documentElement.classList.toggle("dark")
-  }
+  const navigationItems = [
+    { name: "Analytics", href: "/analytics", icon: BarChart3 },
+    { name: "Reports", href: "/reports", icon: FileText },
+    { name: "Customers", href: "/customers", icon: Users },
+    { name: "Revenue", href: "/revenue", icon: DollarSign },
+  ]
 
   return (
-    <>
-      {/* Matrix rain background */}
-      <div className="matrix-rain" />
-
-      {/* Data streams */}
-      <div className="data-stream" style={{ left: "10%", animationDelay: "0s" }} />
-      <div className="data-stream" style={{ left: "30%", animationDelay: "1s" }} />
-      <div className="data-stream" style={{ left: "70%", animationDelay: "2s" }} />
-      <div className="data-stream" style={{ left: "90%", animationDelay: "0.5s" }} />
-
-      <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-yellow-500/30 glow-yellow">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo Section */}
-            <Link href="/" className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center glow-yellow-strong pulse-yellow">
-                  <Zap className="w-6 h-6 text-black" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-yellow-400 cyber-grid">FINLYTICS</h1>
-                <p className="text-xs text-yellow-600 font-mono">NEURAL INTELLIGENCE v2.1</p>
-              </div>
-            </Link>
-
-            {/* System Status */}
-            <div className="hidden md:flex items-center space-x-6">
-              <div className="flex items-center space-x-2 text-xs font-mono">
-                <Activity className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400">SYS:</span>
-                <span className="text-yellow-300">{systemStatus}</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs font-mono">
-                <Wifi className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400">NET:</span>
-                <span className="text-yellow-300">SECURE</span>
-              </div>
-              <div className="flex items-center space-x-2 text-xs font-mono">
-                <Battery className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400">PWR:</span>
-                <span className="text-yellow-300">100%</span>
-              </div>
+    <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-yellow-400/30 cyber-border">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+              <Zap className="w-5 h-5 text-black" />
             </div>
+            <span className="text-xl font-bold neon-text">FINLYTICS</span>
+          </Link>
 
-            {/* Right Side Controls */}
-            <div className="flex items-center space-x-4">
-              {/* Real-time Clock */}
-              <div className="hidden md:block text-xs font-mono text-yellow-400 neon-border px-3 py-1 rounded">
-                {currentTime.toLocaleTimeString()}
-              </div>
-
-              {/* Language Switcher */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="cyber-button gap-2">
-                    <Globe className="w-4 h-4" />
-                    {language}
-                    <ChevronDown className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-black/90 border-yellow-500/30 backdrop-blur-xl">
-                  <DropdownMenuItem
-                    onClick={() => setLanguage("EN")}
-                    className="text-yellow-300 hover:text-yellow-400 hover:bg-yellow-500/10"
-                  >
-                    English
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setLanguage("HI")}
-                    className="text-yellow-300 hover:text-yellow-400 hover:bg-yellow-500/10"
-                  >
-                    हिंदी
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* Dark Mode Toggle */}
-              <Button variant="ghost" size="sm" onClick={toggleDarkMode} className="cyber-button w-10 h-10 p-0">
-                {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </Button>
-
-              {/* Notifications */}
-              <Link href="/notifications">
-                <Button variant="ghost" size="sm" className="cyber-button relative w-10 h-10 p-0">
-                  <Bell className="w-4 h-4" />
-                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 text-xs bg-yellow-500 text-black hover:bg-yellow-500 pulse-yellow">
-                    3
-                  </Badge>
-                </Button>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="flex items-center space-x-2 text-gray-300 hover:text-yellow-400 transition-colors duration-200"
+              >
+                <item.icon className="w-4 h-4" />
+                <span>{item.name}</span>
               </Link>
+            ))}
+          </div>
 
-              {/* Profile Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="cyber-button gap-3 p-3">
-                    <Avatar className="w-8 h-8 neon-border">
-                      <AvatarImage src="/placeholder.svg?height=32&width=32" />
-                      <AvatarFallback className="bg-yellow-500/20 text-yellow-400">JD</AvatarFallback>
-                    </Avatar>
-                    <div className="hidden md:block text-left">
-                      <p className="text-sm font-medium text-yellow-400">ADMIN_USER</p>
-                      <p className="text-xs text-yellow-600 font-mono">LVL_9_ACCESS</p>
-                    </div>
-                    <ChevronDown className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-black/90 border-yellow-500/30 backdrop-blur-xl">
-                  <Link href="/profile">
-                    <DropdownMenuItem className="text-yellow-300 hover:text-yellow-400 hover:bg-yellow-500/10">
-                      Neural Profile
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/team">
-                    <DropdownMenuItem className="text-yellow-300 hover:text-yellow-400 hover:bg-yellow-500/10">
-                      Team Matrix
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/billing">
-                    <DropdownMenuItem className="text-yellow-300 hover:text-yellow-400 hover:bg-yellow-500/10">
-                      Quantum Billing
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link href="/settings">
-                    <DropdownMenuItem className="text-yellow-300 hover:text-yellow-400 hover:bg-yellow-500/10">
-                      System Settings
-                    </DropdownMenuItem>
-                  </Link>
-                  <DropdownMenuItem className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
-                    System Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+          {/* Right Side */}
+          <div className="flex items-center space-x-4">
+            {/* System Status */}
+            <div className="hidden lg:flex items-center space-x-2">
+              <Activity className="w-4 h-4 text-green-400 neural-pulse" />
+              <Badge variant="outline" className="border-green-400/50 text-green-400">
+                LIVE
+              </Badge>
             </div>
+
+            {/* Notifications */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="w-5 h-5" />
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <span className="text-xs text-black font-bold">3</span>
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80 bg-black/95 border-yellow-400/30">
+                <DropdownMenuLabel className="text-yellow-400">System Notifications</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-yellow-400/30" />
+                <DropdownMenuItem className="hover:bg-yellow-400/10">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">Revenue Alert</p>
+                    <p className="text-xs text-gray-400">Monthly target exceeded by 15%</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-yellow-400/10">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">AI Analysis Complete</p>
+                    <p className="text-xs text-gray-400">New insights available for Q4 forecast</p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-yellow-400/10">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">System Update</p>
+                    <p className="text-xs text-gray-400">Neural network optimization completed</p>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8 border-2 border-yellow-400/50">
+                    <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
+                    <AvatarFallback className="bg-yellow-400 text-black">AD</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-black/95 border-yellow-400/30">
+                <DropdownMenuLabel className="text-yellow-400">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">Admin User</p>
+                    <p className="text-xs text-gray-400">admin@finlytics.ai</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-yellow-400/30" />
+                <DropdownMenuItem className="hover:bg-yellow-400/10">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-yellow-400/10">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-yellow-400/30" />
+                <DropdownMenuItem className="hover:bg-red-400/10 text-red-400">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
           </div>
         </div>
-      </nav>
-    </>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-yellow-400/30">
+            <div className="flex flex-col space-y-4">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="flex items-center space-x-2 text-gray-300 hover:text-yellow-400 transition-colors duration-200 px-2 py-1"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
   )
 }

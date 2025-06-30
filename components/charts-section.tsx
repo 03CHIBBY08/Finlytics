@@ -1,237 +1,185 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
+  LineChart,
   Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  Area,
-  AreaChart,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts"
-import { Activity, TrendingUp, Zap, Target } from "lucide-react"
-
-const revenueData = [
-  { month: "JAN", revenue: 45000, users: 1200, prediction: 47000 },
-  { month: "FEB", revenue: 52000, users: 1350, prediction: 54000 },
-  { month: "MAR", revenue: 48000, users: 1280, prediction: 50000 },
-  { month: "APR", revenue: 61000, users: 1520, prediction: 63000 },
-  { month: "MAY", revenue: 55000, users: 1450, prediction: 57000 },
-  { month: "JUN", revenue: 67000, users: 1680, prediction: 69000 },
-  { month: "JUL", revenue: 72000, users: 1820, prediction: 74000 },
-  { month: "AUG", revenue: 69000, users: 1750, prediction: 71000 },
-  { month: "SEP", revenue: 78000, users: 1950, prediction: 80000 },
-  { month: "OCT", revenue: 85000, users: 2100, prediction: 87000 },
-  { month: "NOV", revenue: 92000, users: 2280, prediction: 94000 },
-  { month: "DEC", revenue: 98000, users: 2450, prediction: 100000 },
-]
-
-const categoryData = [
-  { category: "BASIC_NODE", revenue: 45000, growth: 12 },
-  { category: "PRO_MATRIX", revenue: 78000, growth: 18 },
-  { category: "ENTERPRISE_CORE", revenue: 125000, growth: 25 },
-  { category: "NEURAL_ADDONS", revenue: 32000, growth: 8 },
-  { category: "QUANTUM_SERVICES", revenue: 28000, growth: 15 },
-]
+import { TrendingUp, Activity, BarChart3 } from "lucide-react"
 
 export function ChartsSection() {
-  const [timeRange, setTimeRange] = useState("12M")
-  const [isRealTime, setIsRealTime] = useState(false)
-  const [dataPoints, setDataPoints] = useState(revenueData)
+  const revenueData = [
+    { month: "Jan", revenue: 45000, users: 1200 },
+    { month: "Feb", revenue: 52000, users: 1350 },
+    { month: "Mar", revenue: 48000, users: 1280 },
+    { month: "Apr", revenue: 61000, users: 1520 },
+    { month: "May", revenue: 55000, users: 1450 },
+    { month: "Jun", revenue: 67000, users: 1680 },
+    { month: "Jul", revenue: 72000, users: 1820 },
+    { month: "Aug", revenue: 69000, users: 1750 },
+    { month: "Sep", revenue: 78000, users: 1950 },
+    { month: "Oct", revenue: 85000, users: 2100 },
+    { month: "Nov", revenue: 92000, users: 2280 },
+    { month: "Dec", revenue: 98000, users: 2450 },
+  ]
 
-  useEffect(() => {
-    if (isRealTime) {
-      const interval = setInterval(() => {
-        setDataPoints((prev) =>
-          prev.map((item) => ({
-            ...item,
-            revenue: item.revenue + Math.random() * 1000 - 500,
-            users: item.users + Math.floor(Math.random() * 20 - 10),
-          })),
-        )
-      }, 2000)
-      return () => clearInterval(interval)
-    }
-  }, [isRealTime])
+  const categoryData = [
+    { name: "SaaS", value: 35, color: "#ffff00" },
+    { name: "E-commerce", value: 25, color: "#00ffff" },
+    { name: "Fintech", value: 20, color: "#ff00ff" },
+    { name: "Healthcare", value: 12, color: "#00ff00" },
+    { name: "Other", value: 8, color: "#ff8800" },
+  ]
+
+  const performanceData = [
+    { metric: "API Response", value: 95, target: 98 },
+    { metric: "Uptime", value: 99.9, target: 99.5 },
+    { metric: "User Satisfaction", value: 87, target: 90 },
+    { metric: "Processing Speed", value: 92, target: 85 },
+  ]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {/* Neural Revenue Analytics */}
-      <Card className="bg-black/50 border-yellow-500/30 backdrop-blur-xl glow-yellow scan-lines">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-yellow-500/20 rounded-lg glow-yellow">
-                <Activity className="w-5 h-5 text-yellow-400" />
-              </div>
-              <div>
-                <CardTitle className="text-lg font-mono text-yellow-400">NEURAL REVENUE MATRIX</CardTitle>
-                <p className="text-xs text-yellow-600 font-mono">Real-time quantum analysis</p>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsRealTime(!isRealTime)}
-                className={`cyber-button text-xs ${isRealTime ? "bg-yellow-500/20" : ""}`}
-              >
-                <Zap className="w-3 h-3 mr-1" />
-                {isRealTime ? "LIVE" : "STATIC"}
-              </Button>
-              {["30D", "90D", "12M"].map((range) => (
-                <Button
-                  key={range}
-                  variant={timeRange === range ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTimeRange(range)}
-                  className="cyber-button text-xs font-mono"
-                >
-                  {range}
-                </Button>
-              ))}
-            </div>
+    <div className="space-y-6">
+      {/* Revenue Chart */}
+      <Card className="cyber-card">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="w-5 h-5 text-yellow-400" />
+              <span className="neon-text">Revenue Analytics</span>
+            </CardTitle>
+            <p className="text-sm text-gray-400 mt-1">Monthly revenue and user growth trends</p>
           </div>
+          <Badge className="bg-green-400/20 text-green-400 border-green-400/50">+15.3% Growth</Badge>
         </CardHeader>
         <CardContent>
-          <div className="h-80 relative">
-            {isRealTime && (
-              <Badge className="absolute top-2 right-2 z-10 bg-yellow-500/20 text-yellow-400 border-yellow-500/50 animate-pulse">
-                LIVE DATA STREAM
-              </Badge>
-            )}
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={dataPoints}>
+              <AreaChart data={revenueData}>
                 <defs>
                   <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#fbbf24" stopOpacity={0.05} />
-                  </linearGradient>
-                  <linearGradient id="usersGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.05} />
+                    <stop offset="5%" stopColor="#ffff00" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#ffff00" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#fbbf24" strokeOpacity={0.2} />
-                <XAxis dataKey="month" className="text-xs font-mono" stroke="#fbbf24" strokeOpacity={0.7} />
-                <YAxis className="text-xs font-mono" stroke="#fbbf24" strokeOpacity={0.7} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                <XAxis dataKey="month" stroke="#666" fontSize={12} />
+                <YAxis stroke="#666" fontSize={12} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0.9)",
-                    border: "1px solid #fbbf24",
+                    border: "1px solid rgba(255, 255, 0, 0.3)",
                     borderRadius: "8px",
-                    boxShadow: "0 0 20px rgba(251, 191, 36, 0.3)",
-                    color: "#fbbf24",
-                    fontFamily: "monospace",
+                    color: "#fff",
                   }}
                 />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#fbbf24"
-                  strokeWidth={2}
-                  fill="url(#revenueGradient)"
-                  name="Revenue (₹)"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="users"
-                  stroke="#f59e0b"
-                  strokeWidth={2}
-                  fill="url(#usersGradient)"
-                  name="Active Users"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="prediction"
-                  stroke="#fbbf24"
-                  strokeWidth={1}
-                  strokeDasharray="5 5"
-                  dot={false}
-                  name="AI Prediction"
-                />
+                <Area type="monotone" dataKey="revenue" stroke="#ffff00" strokeWidth={2} fill="url(#revenueGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
 
-      {/* Quantum Category Analysis */}
-      <Card className="bg-black/50 border-yellow-500/30 backdrop-blur-xl glow-yellow scan-lines">
-        <CardHeader>
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-yellow-500/20 rounded-lg glow-yellow">
-              <Target className="w-5 h-5 text-yellow-400" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* User Growth Chart */}
+        <Card className="cyber-card">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Activity className="w-5 h-5 text-blue-400" />
+              <span className="text-blue-400">User Growth</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={revenueData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                  <XAxis dataKey="month" stroke="#666" fontSize={12} />
+                  <YAxis stroke="#666" fontSize={12} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(0, 0, 0, 0.9)",
+                      border: "1px solid rgba(0, 255, 255, 0.3)",
+                      borderRadius: "8px",
+                      color: "#fff",
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="users"
+                    stroke="#00ffff"
+                    strokeWidth={3}
+                    dot={{ fill: "#00ffff", strokeWidth: 2, r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
-            <div>
-              <CardTitle className="text-lg font-mono text-yellow-400">QUANTUM CATEGORY MATRIX</CardTitle>
-              <p className="text-xs text-yellow-600 font-mono">Revenue distribution analysis</p>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={categoryData}>
-                <defs>
-                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#fbbf24" stopOpacity={0.3} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#fbbf24" strokeOpacity={0.2} />
-                <XAxis
-                  dataKey="category"
-                  className="text-xs font-mono"
-                  stroke="#fbbf24"
-                  strokeOpacity={0.7}
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                />
-                <YAxis className="text-xs font-mono" stroke="#fbbf24" strokeOpacity={0.7} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(0, 0, 0, 0.9)",
-                    border: "1px solid #fbbf24",
-                    borderRadius: "8px",
-                    boxShadow: "0 0 20px rgba(251, 191, 36, 0.3)",
-                    color: "#fbbf24",
-                    fontFamily: "monospace",
-                  }}
-                />
-                <Bar
-                  dataKey="revenue"
-                  fill="url(#barGradient)"
-                  radius={[4, 4, 0, 0]}
-                  stroke="#fbbf24"
-                  strokeWidth={1}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          </CardContent>
+        </Card>
 
-          {/* Growth indicators */}
-          <div className="mt-4 grid grid-cols-5 gap-2">
-            {categoryData.map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="text-xs font-mono text-yellow-500">{item.category.split("_")[0]}</div>
-                <div className="flex items-center justify-center space-x-1">
-                  <TrendingUp className="w-3 h-3 text-yellow-400" />
-                  <span className="text-xs font-mono text-yellow-400">{item.growth}%</span>
+        {/* Category Distribution */}
+        <Card className="cyber-card">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <BarChart3 className="w-5 h-5 text-purple-400" />
+              <span className="text-purple-400">Revenue by Category</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(0, 0, 0, 0.9)",
+                      border: "1px solid rgba(255, 0, 255, 0.3)",
+                      borderRadius: "8px",
+                      color: "#fff",
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-2">
+              {categoryData.map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                    <span className="text-sm text-gray-300">{item.name}</span>
+                  </div>
+                  <span className="text-sm font-medium" style={{ color: item.color }}>
+                    {item.value}%
+                  </span>
                 </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

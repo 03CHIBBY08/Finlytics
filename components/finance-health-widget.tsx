@@ -1,120 +1,183 @@
-import { Trophy, Award, Star } from "lucide-react"
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-
-const badges = [
-  {
-    name: "10K Club",
-    description: "Revenue milestone",
-    icon: Trophy,
-    color: "text-yellow-600",
-    bgColor: "bg-yellow-100 dark:bg-yellow-900/30",
-    unlocked: true,
-  },
-  {
-    name: "Churn Buster",
-    description: "Churn < 5%",
-    icon: Award,
-    color: "text-green-600",
-    bgColor: "bg-green-100 dark:bg-green-900/30",
-    unlocked: true,
-  },
-  {
-    name: "Growth Guru",
-    description: "MRR +20%",
-    icon: Star,
-    color: "text-purple-600",
-    bgColor: "bg-purple-100 dark:bg-purple-900/30",
-    unlocked: false,
-  },
-]
+import { Heart, Shield, TrendingUp, AlertCircle, CheckCircle, Activity, DollarSign } from "lucide-react"
 
 export function FinanceHealthWidget() {
-  const healthScore = 78
+  const healthScore = 87
 
-  const getScoreColor = (score: number) => {
-    if (score >= 75) return "text-green-600"
-    if (score >= 50) return "text-orange-600"
-    return "text-red-600"
+  const healthMetrics = [
+    {
+      category: "Cash Flow",
+      score: 92,
+      status: "excellent",
+      icon: DollarSign,
+      description: "Strong positive cash flow trend",
+      color: "text-green-400",
+      bgColor: "bg-green-400/10",
+    },
+    {
+      category: "Debt Ratio",
+      score: 78,
+      status: "good",
+      icon: Shield,
+      description: "Manageable debt levels",
+      color: "text-blue-400",
+      bgColor: "bg-blue-400/10",
+    },
+    {
+      category: "Profitability",
+      score: 85,
+      status: "good",
+      icon: TrendingUp,
+      description: "Consistent profit margins",
+      color: "text-green-400",
+      bgColor: "bg-green-400/10",
+    },
+    {
+      category: "Liquidity",
+      score: 94,
+      status: "excellent",
+      icon: Activity,
+      description: "High liquidity reserves",
+      color: "text-green-400",
+      bgColor: "bg-green-400/10",
+    },
+  ]
+
+  const riskFactors = [
+    {
+      factor: "Market Volatility",
+      level: "Low",
+      impact: 15,
+      color: "text-green-400",
+    },
+    {
+      factor: "Credit Risk",
+      level: "Medium",
+      impact: 35,
+      color: "text-yellow-400",
+    },
+    {
+      factor: "Operational Risk",
+      level: "Low",
+      impact: 20,
+      color: "text-green-400",
+    },
+  ]
+
+  const achievements = [
+    "Maintained positive cash flow for 12 months",
+    "Reduced operational costs by 8%",
+    "Improved profit margins by 12%",
+    "Achieved AAA credit rating",
+  ]
+
+  const getHealthColor = (score: number) => {
+    if (score >= 90) return "text-green-400"
+    if (score >= 70) return "text-yellow-400"
+    return "text-red-400"
   }
 
-  const getScoreBgColor = (score: number) => {
-    if (score >= 75) return "from-green-500 to-emerald-500"
-    if (score >= 50) return "from-orange-500 to-yellow-500"
-    return "from-red-500 to-pink-500"
+  const getHealthStatus = (score: number) => {
+    if (score >= 90) return "Excellent"
+    if (score >= 70) return "Good"
+    return "Needs Attention"
   }
 
   return (
-    <div className="space-y-6">
-      {/* Health Score */}
-      <Card className="shadow-lg border-0">
-        <CardHeader className="text-center">
-          <CardTitle className="text-lg font-semibold">Financial Health Score</CardTitle>
-        </CardHeader>
-        <CardContent className="text-center space-y-6">
-          {/* Circular Progress */}
-          <div className="relative w-32 h-32 mx-auto">
-            <div className={`absolute inset-0 bg-gradient-to-r ${getScoreBgColor(healthScore)} rounded-full p-1`}>
-              <div className="w-full h-full bg-white dark:bg-slate-900 rounded-full flex items-center justify-center">
-                <div className="text-center">
-                  <div className={`text-2xl font-bold ${getScoreColor(healthScore)}`}>{healthScore}</div>
-                  <div className="text-xs text-slate-500">/ 100</div>
-                </div>
+    <Card className="cyber-card circuit-pattern">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <Heart className="w-5 h-5 text-red-400 neural-pulse" />
+          <span className="text-red-400">Financial Health</span>
+        </CardTitle>
+        <div className="flex items-center space-x-2">
+          <Badge
+            className={`${
+              healthScore >= 90
+                ? "bg-green-400/20 text-green-400 border-green-400/50"
+                : healthScore >= 70
+                  ? "bg-yellow-400/20 text-yellow-400 border-yellow-400/50"
+                  : "bg-red-400/20 text-red-400 border-red-400/50"
+            }`}
+          >
+            {getHealthStatus(healthScore)}
+          </Badge>
+          <span className="text-xs text-gray-400">Updated 5 minutes ago</span>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Overall Health Score */}
+        <div className="text-center space-y-2">
+          <div className={`text-4xl font-bold ${getHealthColor(healthScore)}`}>{healthScore}</div>
+          <p className="text-sm text-gray-400">Overall Health Score</p>
+          <Progress value={healthScore} className="h-2 bg-gray-800" />
+        </div>
+
+        {/* Health Metrics */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-300">Key Metrics</h4>
+          {healthMetrics.map((metric, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <div className={`p-2 rounded ${metric.bgColor}`}>
+                <metric.icon className={`w-4 h-4 ${metric.color}`} />
               </div>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Progress value={healthScore} className="h-2" />
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              {healthScore >= 75 ? "Excellent" : healthScore >= 50 ? "Good" : "Needs Attention"}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Achievement Badges */}
-      <Card className="shadow-lg border-0">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-600" />
-            Achievements
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {badges.map((badge, index) => (
-            <div
-              key={index}
-              className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
-                badge.unlocked
-                  ? "bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800"
-                  : "bg-slate-100 dark:bg-slate-800 opacity-60"
-              }`}
-            >
-              <div className={`p-2 rounded-lg ${badge.unlocked ? badge.bgColor : "bg-slate-200 dark:bg-slate-700"}`}>
-                <badge.icon className={`w-4 h-4 ${badge.unlocked ? badge.color : "text-slate-400"}`} />
-              </div>
-
               <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`font-medium ${badge.unlocked ? "text-slate-800 dark:text-slate-100" : "text-slate-500"}`}
-                  >
-                    {badge.name}
-                  </span>
-                  {badge.unlocked && (
-                    <Badge className="bg-green-100 text-green-700 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-400">
-                      Unlocked
-                    </Badge>
-                  )}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">{metric.category}</span>
+                  <span className={`text-sm font-medium ${metric.color}`}>{metric.score}%</span>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{badge.description}</p>
+                <p className="text-xs text-gray-500">{metric.description}</p>
+                <Progress value={metric.score} className="h-1 mt-1 bg-gray-800" />
               </div>
             </div>
           ))}
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+
+        {/* Risk Assessment */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-300">Risk Assessment</h4>
+          {riskFactors.map((risk, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <AlertCircle className={`w-4 h-4 ${risk.color}`} />
+                <span className="text-sm text-gray-300">{risk.factor}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Badge
+                  variant="outline"
+                  className={`text-xs ${
+                    risk.level === "Low"
+                      ? "border-green-400/50 text-green-400"
+                      : risk.level === "Medium"
+                        ? "border-yellow-400/50 text-yellow-400"
+                        : "border-red-400/50 text-red-400"
+                  }`}
+                >
+                  {risk.level}
+                </Badge>
+                <span className="text-xs text-gray-500">{risk.impact}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Achievements */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-300">Recent Achievements</h4>
+          <div className="space-y-2">
+            {achievements.map((achievement, index) => (
+              <div key={index} className="flex items-start space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                <span className="text-xs text-gray-400 leading-relaxed">{achievement}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
